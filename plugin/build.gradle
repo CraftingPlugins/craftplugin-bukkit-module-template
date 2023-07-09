@@ -1,6 +1,7 @@
 fairy {
     mainPackage.set("" + findProperty("plugin.package"))
 
+    bukkitProperties().getDepends().add("CraftCore")
     bukkitProperties().bukkitApi = "1.13"
 }
 
