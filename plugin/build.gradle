@@ -1,5 +1,7 @@
+apply plugin: 'xyz.jpenilla.run-paper'
+
 fairy {
-    mainPackage.set("" + findProperty("plugin.package"))
+    mainPackage.set(findProperty("plugin.package").toString())
 
     bukkitProperties().getDepends().add("CraftCore")
     bukkitProperties().bukkitApi = "1.13"
@@ -7,18 +9,18 @@ fairy {
 
 dependencies {
     api("io.fairyproject:bukkit-bundles")
-    api("io.fairyproject:module.animation")
-    api("io.fairyproject:bukkit-command")
-    api("io.fairyproject:bukkit-menu")
-    api("io.fairyproject:module.hologram")
-    api("io.fairyproject:module.config")
-    api("io.fairyproject:module.nametag")
-    api("io.fairyproject:module.sidebar")
-    api("io.fairyproject:bukkit-visibility")
-    api("io.fairyproject:bukkit-visual")
-    api("io.fairyproject:bukkit-timer")
-    api("io.fairyproject:bukkit-nbt")
-    api("io.fairyproject:module.tablist")
+    //api("io.fairyproject:module.animation")
+    //api("io.fairyproject:bukkit-command")
+    //api("io.fairyproject:bukkit-menu")
+    //api("io.fairyproject:module.hologram")
+    //api("io.fairyproject:module.config")
+    //api("io.fairyproject:module.nametag")
+    //api("io.fairyproject:module.sidebar")
+    //api("io.fairyproject:bukkit-visibility")
+    //api("io.fairyproject:bukkit-visual")
+    //api("io.fairyproject:bukkit-timer")
+    //api("io.fairyproject:bukkit-nbt")
+    //api("io.fairyproject:module.tablist")
 }
 
 dependencies {
@@ -41,12 +43,16 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
 tasks {
     shadowJar {
         archiveFileName.set("my-plugin.jar")
+    }
+
+    runServer {
+        minecraftVersion("1.19.4")
     }
 }
