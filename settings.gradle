@@ -9,7 +9,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'FairyTemplate'
+rootProject.name = 'CraftPlugin-example'
 include 'plugin'
 
 void createModule(final String link) {

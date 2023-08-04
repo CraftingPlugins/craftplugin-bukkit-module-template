@@ -1,12 +1,12 @@
-package dev.fairy.example.module;
+package dev.craftplugins.example.infrastructure.module;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import dev.fairy.example.ExamplePlugin;
+import dev.craftplugins.example.ExamplePlugin;
 import io.fairyproject.Fairy;
 import io.fairyproject.container.ContainerContext;
+import io.fairyproject.container.InjectableComponent;
 import io.fairyproject.container.PostInitialize;
-import io.fairyproject.container.Service;
 import io.fairyproject.container.node.ContainerNode;
 import io.fairyproject.container.node.loader.ContainerNodeLoader;
 import io.fairyproject.container.node.scanner.ContainerNodeClassScanner;
@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,19 +24,21 @@ import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-@Service
+@InjectableComponent
 public class ModuleManager {
 
     private static final Gson GSON = new Gson();
     private final ContainerContext context;
+    private final ExamplePlugin plugin;
     @Getter
     private final List<Module> modules;
     private final Path path;
 
-    public ModuleManager(ContainerContext context) {
+    public ModuleManager(ExamplePlugin plugin, ContainerContext context) {
+        this.plugin = plugin;
         this.context = context;
         this.modules = new ArrayList<>();
-        this.path = ExamplePlugin.get().getDataFolder().resolve("modules");
+        this.path = plugin.getDataFolder().resolve("modules");
     }
 
     @PostInitialize
@@ -44,23 +47,25 @@ public class ModuleManager {
             Files.createDirectories(path);
             return;
         }
-        Files.newDirectoryStream(path, "*.jar").forEach(path -> {
-            Module module;
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(path, "*.jar")) {
+            directoryStream.forEach(path -> {
+                Module module;
 
-            try {
-                module = this.loadPath(path);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Bukkit.getConsoleSender().sendMessage(CC.RED + "[Fairy] Failed to load module from jar " + path + ". (is it out-dated?)");
-                return;
-            }
+                try {
+                    module = this.loadPath(path);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Bukkit.getConsoleSender().sendMessage(CC.RED + "[Fairy] Failed to load module from jar " + path + ". (is it out-dated?)");
+                    return;
+                }
 
-            if (module == null)
-                return;
+                if (module == null)
+                    return;
 
-            this.modules.add(module);
-            Bukkit.getConsoleSender().sendMessage(CC.YELLOW + "[Fairy] Loaded module " + CC.WHITE + module.getName() + CC.YELLOW + ".");
-        });
+                this.modules.add(module);
+                Bukkit.getConsoleSender().sendMessage(CC.YELLOW + "[Fairy] Loaded module " + CC.WHITE + module.getName() + CC.YELLOW + ".");
+            });
+        }
     }
 
     private Module loadPath(Path path) throws IOException {
@@ -85,9 +90,9 @@ public class ModuleManager {
         );
 
         String name = getFileName(path.getFileName().toString());
-        ContainerNode node = ContainerNode.create(ExamplePlugin.get().getName() + ":" + name);
-        ContainerNodeClassScanner classScanner = new ContainerNodeClassScanner(context, ExamplePlugin.get().getName() + ":" + name, node);
-        classScanner.getClassLoaders().add(ExamplePlugin.get().getPluginClassLoader());
+        ContainerNode node = ContainerNode.create(this.plugin.getName() + ":" + name);
+        ContainerNodeClassScanner classScanner = new ContainerNodeClassScanner(context, this.plugin.getName() + ":" + name, node);
+        classScanner.getClassLoaders().add(this.plugin.getPluginClassLoader());
         classScanner.getClassPaths().add("*");
         classScanner.getUrls().add(path.toUri().toURL());
         classScanner.scan();
