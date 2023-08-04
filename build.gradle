@@ -5,8 +5,7 @@ buildscript {
     }
 }
 plugins {
-    id 'java-library'
-    id 'io.fairyproject' version '0.6.6b2-SNAPSHOT'
+    id 'io.fairyproject' version '0.6.6b4-INDEV01-SNAPSHOT'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'xyz.jpenilla.run-paper' version '1.0.6' apply false
@@ -16,6 +15,7 @@ repositories {
     mavenLocal()
     mavenCentral()
 }
+
 version = '1.0.0'
 
 allprojects {
@@ -31,7 +31,7 @@ subprojects {
     version = rootProject.version
 
     if (isNotJavaProject(project)) {
-        project.tasks.all { task -> task.enabled = false }
+        project.tasks.configureEach { task -> task.enabled = false }
         project.tasks.withType(PublishToMavenRepository).configureEach { it.enabled = false }
         return
     }
@@ -74,17 +74,16 @@ subprojects {
         testAnnotationProcessor(libs.lombok)
 
         // Testing
-        implementation("org.apache.commons:commons-compress:1.22")
         testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     }
 
     configure([tasks.compileJava]) {
-        sourceCompatibility = 16 // for the IDE support
+        sourceCompatibility = 17 // for the IDE support
         options.release = 8
         options.encoding = 'UTF-8'
 
         javaCompiler = javaToolchains.compilerFor {
-            languageVersion = JavaLanguageVersion.of(16)
+            languageVersion = JavaLanguageVersion.of(17)
         }
     }
 
@@ -95,22 +94,11 @@ subprojects {
     }
 
     shadowJar {
-        relocate("io.fairyproject", "" + findProperty("plugin.package") + ".fairy")
-        relocate("net.kyori", "dev.craftcore.fairy.libs.kyori")
-
-        minimize {
-            exclude(dependency("io.github.classgraph:.*:.*"))
-            exclude(dependency("io.github.toolfactory:.*:.*"))
-            exclude(dependency("javax.annotation:.*:.*"))
-            exclude(dependency("javax.persistence:.*:.*"))
-            exclude(dependency("com.google.code.gson:.*:.*"))
-            exclude(dependency("org.yaml:.*:.*"))
-            exclude(dependency("net.kyori:.*:.*"))
-
-            exclude(dependency("io.fairyproject:.*:.*"))
-            exclude(dependency("io.fairyproject.packetevents:.*:.*"))
-            exclude(dependency("org.apache.commons.compress:.*:.*"))
-        }
+        relocate("io.fairyproject.bootstrap", "" + findProperty("plugin.package") + ".fairy.bootstrap")
+        relocate("io.fairyproject", "" + findProperty("core.package") + ".fairy")
+        relocate("net.kyori", "" + findProperty("core.package") + ".fairy.libs.kyori")
+        relocate("com.cryptomorin.xseries", "" + findProperty("plugin.package") + ".xseries")
+        relocate("org.spongepowered.configurate", "" + findProperty("plugin.package") + ".libs.configurate")
 
         dependencies {
             exclude(dependency("io.github.classgraph:.*:.*"))
@@ -122,9 +110,8 @@ subprojects {
             exclude(dependency("com.google.*:.*:.*"))
             exclude(dependency("org.jetbrains:.*:.*"))
             exclude(dependency("net.kyori:.*:.*"))
-            //exclude(dependency("net.kyori:.*:.*"))
             exclude(dependency("com.github.retrooper.*:.*:.*"))
-            exclude(dependency("io.fairyproject.packetevents:.*:.*"))
+            exclude(dependency("io.fairyproject:.*-platform:.*"))
         }
 
         archiveFileName.set(archiveFileName.get().split("-")[0] + ".jar")

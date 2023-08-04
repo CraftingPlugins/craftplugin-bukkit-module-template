@@ -1,4 +1,4 @@
-package dev.fairy.example.module;
+package dev.craftplugins.example.infrastructure.module;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
