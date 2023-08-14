@@ -5,7 +5,7 @@ buildscript {
     }
 }
 plugins {
-    id 'io.fairyproject' version '0.6.6b4-INDEV01-SNAPSHOT'
+    id 'io.fairyproject' version '0.6.6b6-SNAPSHOT'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'xyz.jpenilla.run-paper' version '1.0.6' apply false
@@ -97,7 +97,7 @@ subprojects {
         relocate("io.fairyproject.bootstrap", "" + findProperty("plugin.package") + ".fairy.bootstrap")
         relocate("io.fairyproject", "" + findProperty("core.package") + ".fairy")
         relocate("net.kyori", "" + findProperty("core.package") + ".fairy.libs.kyori")
-        relocate("com.cryptomorin.xseries", "" + findProperty("plugin.package") + ".xseries")
+        relocate("com.cryptomorin.xseries", "" + findProperty("core.package") + ".xseries")
         relocate("org.spongepowered.configurate", "" + findProperty("plugin.package") + ".libs.configurate")
 
         dependencies {
