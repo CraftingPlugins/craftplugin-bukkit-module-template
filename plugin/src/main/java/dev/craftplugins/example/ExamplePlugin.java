@@ -16,7 +16,7 @@ public class ExamplePlugin extends Plugin {
     }
 
     private void requireCraftCore() {
-        String requiredVersion = "1.0.1";
+        String requiredVersion = "1.0.5";
         String[] requiredSplit = requiredVersion.split("\\.");
 
         int major = Integer.parseInt(requiredSplit[0]);
