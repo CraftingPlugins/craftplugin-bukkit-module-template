@@ -60,6 +60,10 @@ subprojects {
             name = "CodeMC"
             url = uri("https://repo.codemc.io/repository/maven-public/")
         }
+        maven {
+            name = "Ghast"
+            url "https://repo.ghast.dev/private"
+        }
     }
 
     dependencies {
