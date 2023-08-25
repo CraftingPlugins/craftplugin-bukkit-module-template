@@ -44,6 +44,8 @@ subprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven {
             name 'Jitpack'
             url 'https://jitpack.io'
@@ -60,12 +62,17 @@ subprojects {
             name = "CodeMC"
             url = uri("https://repo.codemc.io/repository/maven-public/")
         }
+        maven {
+            name = "Ghast"
+            url "https://repo.ghast.dev/private"
+        }
     }
 
     dependencies {
-        // Jabel
-        annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:0.4.2'
-        compileOnly 'com.github.bsideup.jabel:jabel-javac-plugin:0.4.2'
+        // Manifold
+        api 'systems.manifold:manifold-ext-rt:2023.1.17'
+        annotationProcessor group: 'systems.manifold', name: 'manifold', version: '2023.1.17'
+        testAnnotationProcessor group: 'systems.manifold', name: 'manifold', version: '2023.1.17'
 
         // Lombok
         compileOnly(libs.lombok)
@@ -77,13 +84,16 @@ subprojects {
         testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     }
 
-    configure([tasks.compileJava]) {
-        sourceCompatibility = 17 // for the IDE support
-        options.release = 8
-        options.encoding = 'UTF-8'
-
-        javaCompiler = javaToolchains.compilerFor {
-            languageVersion = JavaLanguageVersion.of(17)
+    if (JavaVersion.current() != JavaVersion.VERSION_1_8 &&
+            sourceSets.main.allJava.files.any { it.name == "module-info.java" }) {
+        tasks.withType(JavaCompile) {
+            // if you DO define a module-info.java file:
+            options.compilerArgs += ['-Xplugin:Manifold', '--module-path', it.classpath.asPath]
+        }
+    } else {
+        tasks.withType(JavaCompile) {
+            // If you DO NOT define a module-info.java file:
+            options.compilerArgs += ['-Xplugin:Manifold']
         }
     }
 

@@ -4,6 +4,7 @@ import dev.craftplugins.example.infrastructure.LibraryLoader;
 import io.fairyproject.FairyLaunch;
 import io.fairyproject.plugin.Plugin;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 @FairyLaunch
 public class ExamplePlugin extends Plugin {
@@ -11,6 +12,9 @@ public class ExamplePlugin extends Plugin {
     @Override
     public void onInitial() {
         requireCraftCore();
+
+        Player player = Bukkit.getPlayer("test");
+        player.playSuccess();
 
         new LibraryLoader().load();
     }
