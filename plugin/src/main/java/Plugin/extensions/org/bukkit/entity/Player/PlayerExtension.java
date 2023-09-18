@@ -1,4 +1,4 @@
-package CraftPluginexample.extensions.org.bukkit.entity.Player;
+package Plugin.extensions.org.bukkit.entity.Player;
 
 import com.cryptomorin.xseries.XSound;
 import manifold.ext.rt.api.Extension;

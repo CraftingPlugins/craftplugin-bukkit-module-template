@@ -5,7 +5,7 @@ buildscript {
     }
 }
 plugins {
-    id 'io.fairyproject' version '0.6.6b10-SNAPSHOT'
+    id 'io.fairyproject' version '0.6.7b2-SNAPSHOT'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'xyz.jpenilla.run-paper' version '1.0.6' apply false
@@ -71,8 +71,8 @@ subprojects {
     dependencies {
         // Manifold
         api 'systems.manifold:manifold-ext-rt:2023.1.17'
-        annotationProcessor group: 'systems.manifold', name: 'manifold', version: '2023.1.17'
-        testAnnotationProcessor group: 'systems.manifold', name: 'manifold', version: '2023.1.17'
+        annotationProcessor group: 'systems.manifold', name: 'manifold-ext', version: '2023.1.17'
+        testAnnotationProcessor group: 'systems.manifold', name: 'manifold-ext', version: '2023.1.17'
 
         // Lombok
         compileOnly(libs.lombok)
