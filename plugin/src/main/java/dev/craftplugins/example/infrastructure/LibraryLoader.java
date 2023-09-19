@@ -7,7 +7,6 @@ import io.fairyproject.log.Log;
 
 public class LibraryLoader {
 
-
     public void load() {
         Log.info("Loading libraries... (This may take a while on first startup)");
 
@@ -24,10 +23,10 @@ public class LibraryLoader {
     private void loadConfigurateLibrary() {
         Fairy.getLibraryHandler().loadLibrary(Library.builder()
                 .gradle("org{}spongepowered:configurate-core:4.1.2")
-                .build(), true, Relocation.of("org{}spongepowered{}configurate", "dev.ghast.bossraid.libs.configurate"));
+                .build(), true, Relocation.of("org{}spongepowered{}configurate", "${dev.craftplugins.example.BuildParameters.PACKAGE}.libs.configurate"));
         Fairy.getLibraryHandler().loadLibrary(Library.builder()
                 .gradle("org{}spongepowered:configurate-yaml:4.1.2")
-                .build(), true, Relocation.of("org{}spongepowered{}configurate", "dev.ghast.bossraid.libs.configurate"));
+                .build(), true, Relocation.of("org{}spongepowered{}configurate", "${dev.craftplugins.example.BuildParameters.PACKAGE}.libs.configurate"));
     }
 
 }
