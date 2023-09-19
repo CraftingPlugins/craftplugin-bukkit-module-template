@@ -5,6 +5,8 @@ buildscript {
     }
 }
 plugins {
+    id 'net.kyori.blossom' version '2.0.0'
+    id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
     id 'io.fairyproject' version '0.6.7b2-SNAPSHOT'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
@@ -40,6 +42,8 @@ subprojects {
     apply plugin: 'io.fairyproject'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'net.kyori.blossom'
+    apply plugin: 'org.jetbrains.gradle.plugin.idea-ext'
 
     repositories {
         mavenLocal()
@@ -70,9 +74,12 @@ subprojects {
 
     dependencies {
         // Manifold
-        api 'systems.manifold:manifold-ext-rt:2023.1.17'
-        annotationProcessor group: 'systems.manifold', name: 'manifold-ext', version: '2023.1.17'
-        testAnnotationProcessor group: 'systems.manifold', name: 'manifold-ext', version: '2023.1.17'
+        api 'systems.manifold:manifold-ext-rt:2023.1.19'
+        annotationProcessor group: 'systems.manifold', name: 'manifold-ext', version: '2023.1.19'
+        testAnnotationProcessor group: 'systems.manifold', name: 'manifold-ext', version: '2023.1.19'
+
+        annotationProcessor 'systems.manifold:manifold-strings:2023.1.18'
+        testAnnotationProcessor 'systems.manifold:manifold-strings:2023.1.18'
 
         // Lombok
         compileOnly(libs.lombok)
@@ -100,6 +107,17 @@ subprojects {
     java {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(8))
+        }
+    }
+
+    sourceSets {
+        main {
+            blossom {
+                javaSources {
+                    property("version", project.version.toString())
+                    property("package", findProperty("plugin.package").toString())
+                }
+            }
         }
     }
 

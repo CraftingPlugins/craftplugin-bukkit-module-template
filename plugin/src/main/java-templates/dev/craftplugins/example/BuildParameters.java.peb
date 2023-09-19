@@ -1,0 +1,6 @@
+package dev.craftplugins.example;
+
+public class BuildParameters {
+    public static final String VERSION = "{{ version }}";
+    public static final String PACKAGE = "{{ package }}";
+}
