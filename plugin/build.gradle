@@ -28,6 +28,7 @@ dependencies {
 dependencies {
     compileOnlyApi(libs.annotations)
     compileOnlyApi(libs.bundles.configurate)
+    api(libs.bundles.craftlibs)
 
     /* ----- Bukkit ----- */
     compileOnlyApi(libs.paper)

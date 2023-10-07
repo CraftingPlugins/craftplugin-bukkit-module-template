@@ -1,12 +1,13 @@
 package dev.craftplugins.example;
 
+import dev.craftingplugins.GetDataFolder;
 import dev.craftplugins.example.infrastructure.LibraryLoader;
 import io.fairyproject.FairyLaunch;
 import io.fairyproject.plugin.Plugin;
 import org.bukkit.Bukkit;
 
 @FairyLaunch
-public class ExamplePlugin extends Plugin {
+public class ExamplePlugin extends Plugin implements GetDataFolder {
 
     @Override
     public void onInitial() {
