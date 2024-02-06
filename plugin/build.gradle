@@ -1,6 +1,5 @@
-apply plugin: "xyz.jpenilla.run-paper"
-
 fairy {
+    name.set("Example")
     mainPackage.set(findProperty("plugin.package").toString())
 
     bukkitProperties().getDepends().add("CraftCore")
@@ -56,7 +55,6 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.19.4")
-        legacyPluginLoading()
+        version = "1.19.4"
     }
 }

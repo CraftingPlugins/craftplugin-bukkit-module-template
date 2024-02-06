@@ -7,7 +7,7 @@ particles = "1.8.4"
 mongodb = "3.12.11"
 placeholderApi = "2.11.2"
 configurate = "4.1.2"
-craftlibs = "1.0.1b2-SNAPSHOT"
+craftlibs = "1.0.2b3-SNAPSHOT"
 
 [libraries]
 configurate = { module = "org.spongepowered:configurate-core", version.ref = "configurate" }
